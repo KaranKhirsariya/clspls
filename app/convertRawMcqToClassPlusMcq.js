@@ -5,7 +5,6 @@ import { pathToFileURL } from "url";
 import { v4 as uuidv4 } from "uuid";
 import { SOURCE_DIR } from "../constantz.js";
 
-// const subject = "Environment";
 const getMCQCommonMetadata = (subject) => {
   return {
     type: "multiple_choice",
@@ -149,6 +148,5 @@ export const prepareQuestions = (jsonFileContent, subject) => {
         );
       }
     );
-    // Convert the file path to a proper file URL
   });
 };

@@ -8,7 +8,6 @@ const prepareData = (testRes, tags) => {
     name: testRes.name,
     tags: tags.map(({...rest}) => ({ ...rest, isActive: true })),
     _id: testRes._id,
-    // parentFolder: "67c05599491205bd1de2b955",
     totalMarks: 0,
     duration: testRes.duration,
     shuffleQuestions: false,

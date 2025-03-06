@@ -82,7 +82,6 @@ export const createTestsFromPendingJsons = async (subject) => {
       if (status === "fulfilled") {
         const targetPath = path.join(targetDir, rest.value.file);
         fs.renameSync(pendingDir + "/" + rest.value.file, targetPath);
-        // Convert the file path to a proper file URL
 
         const fileUrl = pathToFileURL(targetPath).href;
         console.log(
@@ -96,4 +95,3 @@ export const createTestsFromPendingJsons = async (subject) => {
     });
   });
 };
-// createTestsFromPendingJsons();

@@ -8,7 +8,6 @@ let prepareData = (name, tags, duration = 1800000) => {
     hours: duration / 3600000,
     minutes: duration / 60000,
     tags,
-    // parentFolder: "67c05599491205bd1de2b955",
     instructions: "",
     duration,
     shuffleQuestions: false,

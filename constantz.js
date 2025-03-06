@@ -1,7 +1,7 @@
-import { fileURLToPath } from "url";
-import path from "path";
 import dotenv from "dotenv";
-// Load environment variables from .env file
+import path from "path";
+import { fileURLToPath } from "url";
+
 dotenv.config();
 
 const SOURCE_DIR_LOCATION = process.env.SOURCE_DIR;
