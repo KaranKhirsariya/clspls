@@ -1,0 +1,21 @@
+{
+  "name": "classplus-cli",
+  "version": "1.0.0",
+  "description": "Classplus utitlities for tutor for creating tests, upload questions in bulk from raw JSON files",
+  "type": "module",
+  "author": "Karan Khirsariya",
+  "license": "MIT",
+  "private": true,
+  "bin": {
+    "clspls": "./index.js"
+  },
+  "dependencies": {
+    "axios": "^1.8.1",
+    "chalk": "^5.4.1",
+    "commander": "^13.1.0",
+    "conf": "^13.1.0",
+    "dotenv": "^16.4.7",
+    "inquirer": "^12.4.2",
+    "uuid": "^11.1.0"
+  }
+}

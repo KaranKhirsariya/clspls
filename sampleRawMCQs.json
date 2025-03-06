@@ -1,0 +1,69 @@
+{
+  "mcqs": [
+    {
+      "question": {
+        "english": "Consider the following statements.",
+        "gujarati": "નીચેના વિધાનો ધ્યાને લો."
+      },
+      "other_infor": {
+        "1": {
+          "english": "Statement 1: Black soil is sticky, it swells when wet and becomes sticky but shrinks when dry.",
+          "gujarati": "વિધાન 1 : કાળી જમીન ચીકાશવાળી હોય છે કે જે જ્યારે ભીની હોય છે ત્યારે ફૂલે છે અને ચીકણી બને છે પરંતુ જ્યારે સૂકી હોય છે ત્યારે સંકોચાય છે."
+        },
+        "2": {
+          "english": "Statement 2: Wide cracks develop in this soil during the dry season and it becomes 'self-cultivated' land.",
+          "gujarati": "વિધાન 2 : આ જમીનમાં સૂકી ઋતુ દરમ્યાન પહોળી તિરાડો પડે છે અને “સ્વખેડાણવાળી' જમીન બને છે."
+        }
+      },
+      "options": {
+        "A": {
+          "english": "Both statements 1 and 2 are true and statement 2 is the correct explanation for statement 1.",
+          "gujarati": "વિધાન 1 અને 2 બંને સાચાં છે અને વિધાન 2 એ વિધાન 1 માટેની સાચી સમજૂતી છે."
+        },
+        "B": {
+          "english": "Both statements 1 and 2 are true but statement 2 is not the correct explanation for statement 1.",
+          "gujarati": "વિધાન 1 અને 2 બંને સાચાં છે પરંતુ વિધાન 2 એ વિધાન 1 માટેની સાચી સમજૂતી નથી."
+        },
+        "C": {
+          "english": "Statement 1 is true but statement 2 is false.",
+          "gujarati": "વિધાન 1 સાચું છે પરંતુ વિધાન 2 ખોટું છે."
+        },
+        "D": {
+          "english": "Statement 1 is false and statement 2 is true.",
+          "gujarati": "વિધાન 1 ખોટું છે અને વિધાન 2 સાચું છે."
+        }
+      },
+      "correct_answer": "A",
+      "subject": "Environment",
+      "sub_topic": "Ecosystems and Conservation Efforts"
+    },
+    {
+      "question": {
+        "english": "What effect do development activities have on the hydrosphere?",
+        "gujarati": "હાઈડ્રોસિસ્ફયર (Hydrosphere) ઉપર વિકાસ પ્રવૃત્તિઓ શું અસર કરે છે?"
+      },
+      "other_infor": {},
+      "options": {
+        "A": {
+          "english": "Air pollution",
+          "gujarati": "વાયુ પ્રદૂષણ"
+        },
+        "B": {
+          "english": "Soil pollution",
+          "gujarati": "માટીનું પ્રદૂષણ"
+        },
+        "C": {
+          "english": "Water pollution",
+          "gujarati": "જળ પ્રદૂષણ"
+        },
+        "D": {
+          "english": "Soil erosion",
+          "gujarati": "માટીનું ધોવાણ"
+        }
+      },
+      "correct_answer": "C",
+      "subject": "Environment",
+      "sub_topic": "Environmental Pollution"
+    }
+  ]
+}
