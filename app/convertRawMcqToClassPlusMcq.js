@@ -3,6 +3,7 @@ import fs from "fs";
 import path from "path";
 import { pathToFileURL } from "url";
 import { v4 as uuidv4 } from "uuid";
+import { toSoftPascalCaseWithSpaces } from "../utils/toSoftPascalCaseWithSpaces.js";
 
 const getMCQCommonMetadata = (subject) => {
   return {
@@ -113,20 +114,20 @@ export const prepareQuestions = (jsonFileContent, subject, directory) => {
   if (!mcqs || !Array.isArray(mcqs)) {
     throw new Error("Can not prepare from json files without questions data.");
   }
-  mcqs.forEach((mcq) => {
-    mcq.sub_topic = mcq.sub_topic || "Miscellaneous";
+  for (const mcq of mcqs) {
+    mcq.sub_topic = toSoftPascalCaseWithSpaces(mcq.sub_topic || "Miscellaneous");
     if (mapTopicWiseMcqs.has(mcq.sub_topic)) {
       mapTopicWiseMcqs.get(mcq.sub_topic).push(convertMCQ(mcq, subject));
     } else {
       mapTopicWiseMcqs.set(mcq.sub_topic, [convertMCQ(mcq, subject)]);
     }
-  });
+  }
 
   const pendingDir = path.join(directory, "pending");
 
   fs.mkdirSync(`${pendingDir}/${subject}`, { recursive: true });
 
-  mapTopicWiseMcqs.forEach(async (mcqs, subTopic) => {
+  for (const [subTopic, mcqs] of mapTopicWiseMcqs) {
     const targetPath = `${pendingDir}/${subject}/${subTopic}.json`;
     fs.writeFile(
       targetPath,
@@ -151,5 +152,5 @@ export const prepareQuestions = (jsonFileContent, subject, directory) => {
         );
       }
     );
-  });
+  }
 };
