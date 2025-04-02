@@ -4,8 +4,25 @@
   "description": "Classplus utitlities for tutor for creating tests, upload questions in bulk from raw JSON files",
   "type": "module",
   "author": "Karan Khirsariya",
+  "keywords": [
+    "clspls",    
+    "classplus",
+    "education",
+    "tutor"
+  ],
   "license": "MIT",
-  "private": true,
+  "files": [
+    "index.js",
+    "constantz.js",
+    "app/",
+    "api/",
+    "commands/",
+    "utils/"
+  ],
+  "preferGlobal": true,
+  "publishConfig": {
+    "access": "public"
+  },
   "bin": {
     "clspls": "./index.js"
   },

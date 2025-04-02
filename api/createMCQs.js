@@ -1,5 +1,4 @@
 import { axiosInstance } from "./axiosInstance.js";
-import { getTags } from "./getTags.js";
 
 const prepareData = (questions, testId, sectionId) => {
   return {

@@ -7,7 +7,6 @@ import { createSection } from "../api/createSection.js";
 import { createTest } from "../api/createTest.js";
 import { getTags } from "../api/getTags.js";
 import { updateTest } from "../api/updateTest.js";
-import { SOURCE_DIR } from "../constantz.js";
 import { sleepRandom } from "../utils/sleepRandom.js";
 import { prepareTag } from "../utils/tagUtils.js";
 
@@ -16,12 +15,12 @@ function loadJSON(filePath) {
   return JSON.parse(data);
 }
 
-export const createTestsFromPendingJsons = async (subject) => {
+export const createTestsFromPendingJsons = async (subject, dataDirectory) => {
   const tagsRes = await getTags(subject);
   const subjectTag = prepareTag(subject, tagsRes);
 
-  const pendingDir = path.join(SOURCE_DIR, `pending/${subject}`);
-  const targetDir = path.join(SOURCE_DIR, `completed/${subject}`);
+  const pendingDir = path.join(dataDirectory, `pending/${subject}`);
+  const targetDir = path.join(dataDirectory, `completed/${subject}`);
   const files = fs.readdirSync(pendingDir, { encoding: "utf-8" });
   fs.mkdirSync(targetDir, { recursive: true });
   await Promise.allSettled(

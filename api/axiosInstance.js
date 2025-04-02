@@ -1,6 +1,8 @@
 import axios from "axios";
+import { API_URL } from "../constantz.js";
+
 const token = process.env.AUTH_TOKEN;
-const baseURL = process.env.API_URL;
+const baseURL = API_URL;
 export const axiosInstance = axios.create({
   method: "post",
   maxBodyLength: Infinity,

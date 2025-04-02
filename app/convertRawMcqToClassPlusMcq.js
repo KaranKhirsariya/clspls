@@ -3,7 +3,6 @@ import fs from "fs";
 import path from "path";
 import { pathToFileURL } from "url";
 import { v4 as uuidv4 } from "uuid";
-import { SOURCE_DIR } from "../constantz.js";
 
 const getMCQCommonMetadata = (subject) => {
   return {
@@ -106,11 +105,15 @@ function convertMCQ(input, subject) {
   return output;
 }
 
-export const prepareQuestions = (jsonFileContent, subject) => {
+export const prepareQuestions = (jsonFileContent, subject, directory) => {
   const jsonMCQs = JSON.parse(jsonFileContent);
 
   const mapTopicWiseMcqs = new Map();
-  jsonMCQs.mcqs.forEach((mcq) => {
+  const mcqs = jsonMCQs.mcqs || jsonMCQs;
+  if (!mcqs || !Array.isArray(mcqs)) {
+    throw new Error("Can not prepare from json files without questions data.");
+  }
+  mcqs.forEach((mcq) => {
     mcq.sub_topic = mcq.sub_topic || "Miscellaneous";
     if (mapTopicWiseMcqs.has(mcq.sub_topic)) {
       mapTopicWiseMcqs.get(mcq.sub_topic).push(convertMCQ(mcq, subject));
@@ -119,7 +122,7 @@ export const prepareQuestions = (jsonFileContent, subject) => {
     }
   });
 
-  const pendingDir = path.join(SOURCE_DIR, "pending");
+  const pendingDir = path.join(directory, "pending");
 
   fs.mkdirSync(`${pendingDir}/${subject}`, { recursive: true });
 

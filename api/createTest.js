@@ -1,6 +1,4 @@
-import { prepareTag } from "../utils/tagUtils.js";
 import { axiosInstance } from "./axiosInstance.js";
-import { getTags } from "./getTags.js";
 
 let prepareData = (name, tags, duration = 1800000) => {
   return {
