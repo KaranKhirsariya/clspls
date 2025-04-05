@@ -1,10 +1,10 @@
 import fs from "fs";
 import inquirer from "inquirer";
 import path from "path";
-import config from "../app/config.js";
+import { getConfig, setConfig } from "../app/config.js";
 
 export async function askForDirectory() {
-  const savedDir = config.get("dir");
+  const savedDir = getConfig("dir");
   let returnVal = savedDir;
   if (savedDir) {
     try {
@@ -37,7 +37,7 @@ export async function askForDirectory() {
           default: process.cwd(),
         },
       ]);
-      config.set("dir", newDir); // Save new directory
+      setConfig("dir", newDir); // Save new directory
       returnVal = newDir;
     } catch (error) {
       console.log("\n❌ Prompt interrupted. Exiting gracefully.");

@@ -1,19 +1,17 @@
 #!/usr/bin/env node
 
 import { program } from "commander";
-import { prepareCommand } from "./commands/prepare.js";
-import { uploadCommand } from "./commands/upload.js";
+import { registerCommands } from "./commands/index.js";
+import { handleExit } from "./utils/exitHandlers.js";
 
-
+// Initialize CLI
 program.version("1.0.0").description("Classplus (unofficial) tutor CLI");
 
-// Register commands
-program.addCommand(prepareCommand);
-program.addCommand(uploadCommand);
+// Register all commands
+registerCommands(program);
 
+// Parse arguments
 program.parse(process.argv);
-// Handle Ctrl+C gracefully
-process.on("SIGINT", () => {
-  console.log("\n❌ Operation cancelled by user. Exiting...");
-  process.exit(0);
-});
+
+// Handle process exits
+handleExit();

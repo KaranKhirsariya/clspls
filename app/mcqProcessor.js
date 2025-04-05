@@ -1,10 +1,9 @@
-import chalk from "chalk";
-import fs from "fs";
-import path from "path";
-import { pathToFileURL } from "url";
 import { v4 as uuidv4 } from "uuid";
 import { toSoftPascalCaseWithSpaces } from "../utils/stringUtils.js";
+import { ensureDirectory, saveJSON, logFileSuccess } from "../utils/fileUtils.js";
+import path from "path";
 
+// Get common metadata for MCQ questions
 const getMCQCommonMetadata = (subject) => {
   return {
     type: "multiple_choice",
@@ -37,34 +36,40 @@ const getMCQCommonMetadata = (subject) => {
     isGpscType: false,
   };
 };
+
+// Convert individual MCQ questions
 function convertMCQ(input, subject) {
-  let statements, gujaratiStatements, listType;
+  let statements = "", gujaratiStatements = "", listType = "i";
+  
+  // Process additional information if available
   if (input.other_infor) {
     const listKey = Object.keys(input.other_infor)?.[0]?.replaceAll(
       /[\(\)\.]/g,
       ""
     );
+    
     if (["1", "A", "a", "I", "i"].includes(listKey)) {
       listType = listKey;
-    } else {
-      listType = "i";
     }
 
     statements = Object.values(input.other_infor)
       ?.map((info) => `<li>${info.english}</li>`)
       .join("\n");
+      
     gujaratiStatements = Object.values(input.other_infor)
       ?.map((info) => `<li>${info.gujarati}</li>`)
       .join("\n");
   }
-  const output = {
+  
+  // Create formatted MCQ output
+  return {
     id: uuidv4(),
     name: `<p>${input.question.english}</p>${
       input.other_infor
         ? `\n<p></p>\n<ol type="${listType}">\n${statements}\n</ol>`
         : ""
     }`,
-    nameText: `${input.question.english}\n\n${Object.values(input.other_infor)
+    nameText: `${input.question.english}\n\n${Object.values(input.other_infor || {})
       .map((info) => info.english)
       .join("\n")}`,
     solution: `<p>${input.options[input.correct_answer].english}</p>`,
@@ -76,7 +81,7 @@ function convertMCQ(input, subject) {
             : ""
         }`,
         nameText: `${input.question.gujarati}\n\n${Object.values(
-          input.other_infor
+          input.other_infor || {}
         )
           .map((info) => info.gujarati)
           .join("\n")}`,
@@ -85,7 +90,7 @@ function convertMCQ(input, subject) {
     },
     tags: [
       { name: input.subject },
-      { name: input.sub_topic | "Miscellaneous" },
+      { name: input.sub_topic || "Miscellaneous" },
     ],
     options: Object.keys(input.options).map((key, index) => ({
       id: uuidv4(),
@@ -102,20 +107,24 @@ function convertMCQ(input, subject) {
     })),
     ...getMCQCommonMetadata(subject),
   };
-
-  return output;
 }
 
-export const prepareQuestions = (jsonFileContent, subject, directory) => {
-  const jsonMCQs = JSON.parse(jsonFileContent);
-
-  const mapTopicWiseMcqs = new Map();
-  const mcqs = jsonMCQs.mcqs || jsonMCQs;
+// Process and organize questions by topics
+export const prepareQuestions = async (jsonData, subject, directory) => {
+  // Handle different data formats 
+  const mcqs = jsonData.mcqs || jsonData;
+  
   if (!mcqs || !Array.isArray(mcqs)) {
-    throw new Error("Can not prepare from json files without questions data.");
+    throw new Error("Cannot prepare from JSON files without valid questions data.");
   }
+  
+  // Map for organizing MCQs by topic
+  const mapTopicWiseMcqs = new Map();
+  
+  // Process each MCQ and organize by topic
   for (const mcq of mcqs) {
     mcq.sub_topic = toSoftPascalCaseWithSpaces(mcq.sub_topic || "Miscellaneous");
+    
     if (mapTopicWiseMcqs.has(mcq.sub_topic)) {
       mapTopicWiseMcqs.get(mcq.sub_topic).push(convertMCQ(mcq, subject));
     } else {
@@ -123,34 +132,30 @@ export const prepareQuestions = (jsonFileContent, subject, directory) => {
     }
   }
 
+  // Create subject directory
   const pendingDir = path.join(directory, "pending");
-
-  fs.mkdirSync(`${pendingDir}/${subject}`, { recursive: true });
-
+  const subjectDir = ensureDirectory(path.join(pendingDir, subject));
+  
+  // Create files for each topic
+  const savePromises = [];
   for (const [subTopic, mcqs] of mapTopicWiseMcqs) {
-    const targetPath = `${pendingDir}/${subject}/${subTopic}.json`;
-    fs.writeFile(
-      targetPath,
-      JSON.stringify(
-        mcqs.map((output, index) => ({
-          ...output,
-          tags: [...output.tags, { name: subTopic }],
-          order: index + 1,
-        })),
-        null,
-        "  "
-      ),
-      "utf-8",
-      (error) => {
-        if (error) throw error;
-        const fileName = path.basename(targetPath);
-        const fileUrl = pathToFileURL(targetPath).href;
-        console.log(
-          `✅ mcq file created: ${chalk.blue.underline(
-            `\u001b]8;;${fileUrl}\u001b\\${fileName}\u001b]8;;\u001b\\`
-          )}`
-        );
-      }
-    );
+    const targetPath = path.join(subjectDir, `${subTopic}.json`);
+    
+    // Add order and tags to each question
+    const formattedMcqs = mcqs.map((output, index) => ({
+      ...output,
+      tags: [...output.tags, { name: subTopic }],
+      order: index + 1,
+    }));
+    
+    // Save the file
+    saveJSON(targetPath, formattedMcqs);
+    logFileSuccess("MCQ file created", targetPath);
   }
-};
+  
+  return {
+    success: true,
+    topicsCount: mapTopicWiseMcqs.size,
+    totalQuestions: mcqs.length
+  };
+}; 

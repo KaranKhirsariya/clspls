@@ -1,5 +1,5 @@
 import fs from "fs";
-import { prepareQuestions } from "../app/convertRawMcqToClassPlusMcq.js";
+import { prepareQuestions } from "../app/mcqProcessor.js";
 
 export function processRawJsonFile(filePath, subject) {
   if (!fs.existsSync(filePath)) {
